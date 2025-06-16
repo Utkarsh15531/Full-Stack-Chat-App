@@ -1,0 +1,29 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.env
+
+#gitignore:  while deploying or putting it on github the list in the gitignore file tells that what file need to be ignored that is what files must not be uploaded for security reason
+#NOTE: gitignore file must be in the root directory of folder which is going to be uploaded otherwise it won't work as expected
