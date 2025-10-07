@@ -19,7 +19,59 @@ const messageSchema = new mongoose.Schema(
         image:{
             type:String,
         },
-    },{timestamps: true}  //"timestamps" Automatically add "createdAt" and "updatedAT" key which can be used bu us for showing when the user has signup and when he last updated all the keys(user details)  
+        voiceMessage: {
+            type: String, // base64 encoded audio data or URL
+        },
+        voiceDuration: {
+            type: Number, // duration in seconds
+            default: 0
+        },
+        status: {
+            type: String,
+            enum: ['sending', 'sent', 'delivered', 'read'],
+            default: 'sent'
+        },
+        // New fields for enhanced features
+        reactions: [{
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            },
+            emoji: {
+                type: String,
+                required: true
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }],
+        editedAt: {
+            type: Date,
+            default: null
+        },
+        replyTo: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Message",
+            default: null
+        },
+        readBy: [{
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            },
+            readAt: {
+                type: Date,
+                default: Date.now
+            }
+        }],
+        isDeleted: {
+            type: Boolean,
+            default: false
+        }
+    },{timestamps: true}  //"timestamps" Automatically add "createdAt" and "updatedAT" key which can be used by us for showing when the user has signup and when he last updated all the keys(user details)
 );
 
 //mongoose.model("Message", messageSchema); will create/resuse a collection of name "messages" and return the Message model

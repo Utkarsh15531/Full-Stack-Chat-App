@@ -5,7 +5,7 @@ import SidebarSkeleton from "./skeletons/SidebarSkeleton.jsx";
 import { Users } from "lucide-react";
 
 const Sidebar = () => {
-  const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading, getMessages } = useChatStore();
+  const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading, getMessages, unreadCounts } = useChatStore();
 
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
@@ -48,10 +48,9 @@ const Sidebar = () => {
           <button
             key={user._id}
             onClick={() => {
+              // Set the new user and immediately load that user's messages
               setSelectedUser(user);
-              if (selectedUser) {
-                getMessages(selectedUser._id);
-              }
+              getMessages(user._id);
             }}
             className={`
               w-full p-3 flex items-center gap-3
@@ -74,12 +73,19 @@ const Sidebar = () => {
             </div>
 
             {/* User info - only visible on larger screens */}
-            <div className="hidden lg:block text-left min-w-0">
+            <div className="hidden lg:block text-left min-w-0 flex-1">
               <div className="font-medium truncate">{user.fullName}</div>
               <div className="text-sm text-zinc-400">
                 {onlineUsers.includes(user._id) ? "Online" : "Offline"}    {/* this will display online or offline text below user name */}
               </div>
             </div>
+            
+            {/* Unread message count badge */}
+            {unreadCounts[user._id] > 0 && (
+              <div className="bg-primary text-primary-content text-xs font-bold rounded-full min-w-[20px] h-5 flex items-center justify-center px-2">
+                {unreadCounts[user._id] > 99 ? '99+' : unreadCounts[user._id]}
+              </div>
+            )}
           </button>
         ))}
 

@@ -1,6 +1,6 @@
 import { THEMES } from "../constants"; //no need to explicitly mention index.js like "../constants/index.js" 
 import { useThemeStore } from "../store/useThemeStore";
-import { Send } from "lucide-react"; //"Send" is an icon here
+import { Send, Volume2, VolumeX } from "lucide-react"; //"Send" is an icon here
 
 const PREVIEW_MESSAGES = [
   { id: 1, content: "Hey! How's it going?", isSent: false },
@@ -8,11 +8,36 @@ const PREVIEW_MESSAGES = [
 ];
 
 const SettingsPage = () => {
-  const { theme, setTheme } = useThemeStore();
+  const { theme, setTheme, soundEnabled, setSoundEnabled } = useThemeStore();
 
   return (
-    <div className="h-screen container mx-auto px-4 pt-20 max-w-5xl">
-      <div className="space-y-6">
+    <div className="min-h-screen bg-base-100 pt-20">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <div className="space-y-6">
+        
+        {/* Sound Settings */}
+        <div className="space-y-4">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-lg font-semibold">Sound Notifications</h2>
+            <p className="text-sm text-base-content/70">Enable or disable sound notifications for new messages</p>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                soundEnabled 
+                  ? 'bg-primary text-primary-content' 
+                  : 'bg-base-200 hover:bg-base-300'
+              }`}
+            >
+              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+              {soundEnabled ? 'Sound On' : 'Sound Off'}
+            </button>
+          </div>
+        </div>
+        
+        {/* Theme Settings */}
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-semibold">Theme</h2>
           <p className="text-sm text-base-content/70">Choose a theme for your chat interface</p>
@@ -110,6 +135,7 @@ const SettingsPage = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

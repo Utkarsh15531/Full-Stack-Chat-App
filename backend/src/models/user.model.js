@@ -15,11 +15,19 @@ const userSchema = new mongoose.Schema(
         password:{
             type:String,
             required:true,
-            minlenght:6,
+            minlength:6,
         },
         profilePic:{
             type:String,
-            dafault:"",
+            default:"",
+        },
+        lastSeen: {
+            type: Date,
+            default: Date.now
+        },
+        isOnline: {
+            type: Boolean,
+            default: false
         },
     },{timestamps: true}  //"timestamps" Automatically add "createdAt" and "updatedAT" key which can be used by us for showing when the user has signup and when he last updated all the keys(user details)  
 );

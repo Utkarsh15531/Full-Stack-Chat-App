@@ -17,7 +17,9 @@ dotenv.config();
 const PORT = process.env.PORT;
 const __dirname = path.resolve(); //this also done for deployment
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' })); //the size limit fixed the voice msg sent error
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));  //added later which also helped inresolving voice msg error
+
 app.use(cookieParser());
 app.use(
   cors({

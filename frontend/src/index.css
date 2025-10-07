@@ -1,2 +1,50 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* Ensure body and html use theme background */
+/* @apply -->  to use Tailwind classes inside traditional CSS selectors  */
+
+html, body {
+  @apply bg-base-100; /* tailwind classes */
+  margin: 0; /* traditional css */
+  padding: 0;
+}
+
+
+#root {
+  @apply bg-base-100 min-h-screen;
+}
+
+
+/* Custom scrollbar styling */
+/* ::-webkit-scrollbar
+•  What it is: -webkit- is a Pseudo-element selector for webkit browsers (Chrome, Safari, Edge)
+•  Double colon (::): Modern CSS pseudo-element syntax
+•  -webkit-: Browser vendor prefix for webkit-based browsers
+•  What it targets: The entire scrollbar */
+
+/* WebKit browsers are web browsers that utilize the WebKit rendering engine to display web content. WebKit is an open-source 
+browser engine developed primarily by Apple Inc. It is responsible for interpreting HTML, CSS, and JavaScript and rendering 
+them into the visual web pages users see. */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-base-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-base-300 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-base-content/20;
+}
+
+/*   Asterisk (*): Selects every single element on the page, applies to all element  */
+/* For Firefox --> (Firefox doesn't support webkit pseudo-elements) 1.e why we r dealing the scroll bar seprately for firefox*/
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--bc) / 0.2) hsl(var(--b1));
+}

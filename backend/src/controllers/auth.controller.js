@@ -69,6 +69,11 @@ export const login = async(req, res)=>{
         }
 
         generateToken(user._id, res) //generates token on each login
+        
+        // Update last seen and online status
+        user.lastSeen = new Date();
+        user.isOnline = true;
+        await user.save();
 
         //statusCode 200 means OK, used to indicate Successful GET, PUT, PATCH, DELETE, or non-creation POST
         res.status(200).json({
@@ -76,6 +81,8 @@ export const login = async(req, res)=>{
             fullName: user.fullName,
             email:user.email,
             profilePic:user.profilePic,
+            lastSeen: user.lastSeen,
+            isOnline: user.isOnline,
         })
 
     } catch (error) {
@@ -84,14 +91,52 @@ export const login = async(req, res)=>{
     }
 };
 
-export const logout = (req, res)=>{
+export const logout = async (req, res)=>{
     try {
-        //res.cookie("cookieName", "token", {options})
-        res.cookie("jwt", "", {maxAge:0}) //clearing out cookie, maxAge:0 expires the cookie at the instant 
+        // Clear cookie first, regardless of user status
+        res.cookie("jwt", "", {
+            maxAge: 0,
+            httpOnly: true,
+            sameSite: "strict",
+            secure: process.env.NODE_ENV === "production"
+        });
+        
+        // If user is authenticated, update their offline status
+        if (req.user && req.user._id) {
+            try {
+                await User.findByIdAndUpdate(req.user._id, {
+                    isOnline: false,
+                    lastSeen: new Date()
+                });
+            } catch (updateError) {
+                console.log("Error updating user status on logout:", updateError.message);
+                // Don't fail logout if status update fails
+            }
+        }
+        
         res.status(200).json({message: "Logged out successfully"});
     } catch (error) {
         console.log("Error in logout controller", error.message);
-        res.status(500).json({message:"Internal Server error"});
+        // Still clear cookie even if there's an error
+        res.cookie("jwt", "", {maxAge:0});
+        res.status(200).json({message: "Logged out successfully"});
+    }
+};
+
+// Update user's last seen timestamp
+export const updateLastSeen = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        
+        await User.findByIdAndUpdate(userId, {
+            lastSeen: new Date(),
+            isOnline: true
+        });
+        
+        res.status(200).json({ message: "Last seen updated" });
+    } catch (error) {
+        console.log("Error in updateLastSeen controller", error.message);
+        res.status(500).json({ message: "Internal Server error" });
     }
 };
 
