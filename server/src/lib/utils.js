@@ -9,8 +9,10 @@ export const generateToken = (userId, res)=>{
     res.cookie("jwt", token, {
         maxAge: 7*24*60*60*1000, //time in ms
         httpOnly: true, //prevent XSS attacks cross-site scripting attacks, basically make secure
-        sameSite: "strict", //CSRF attacks crooss-site request forgery attacks, again for making more secure 
-        secure: process.env.NODE_ENV !== "development" //this is going to be true if we r in production,i.e "secure" will determine if it is http or https site, s in https stands for secure 
+        // sameSite: "strict", //CSRF attacks crooss-site request forgery attacks, again for making more secure 
+        // secure: process.env.NODE_ENV !== "development" //this is going to be true if we r in production,i.e "secure" will determine if it is http or https site, s in https stands for secure 
+        sameSite: "None", 
+        secure: true,
     });
 
     return token;
