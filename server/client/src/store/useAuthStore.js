@@ -5,6 +5,7 @@ import {io} from "socket.io-client";
 
 //backend url
 const BASE_URL= "http://localhost:5001"
+// const BASE_URL= "http://192.170.11.50:5001"
 
 
 //we will have bunch of different loading states
