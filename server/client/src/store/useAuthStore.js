@@ -113,6 +113,7 @@ export const useAuthStore = create((set, get)=>({
             query:{
                 userId: authUser._id,
             },
+            withCredentials: true, //done for deploymment on Render
         });
         socket.connect()
         
