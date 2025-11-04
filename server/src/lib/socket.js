@@ -11,6 +11,7 @@ const io = new Server(server, {
     origin: "https://whatsweb-client.onrender.com",
     // origin: ["http://localhost:5173"],
     // origin: ["http://192.170.11.50:5173"],
+    credentials: true, // <-- REQUIRED to send cookies/tokens
   },
 });
 
