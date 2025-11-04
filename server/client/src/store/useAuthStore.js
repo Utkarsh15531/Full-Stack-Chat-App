@@ -4,8 +4,10 @@ import toast from 'react-hot-toast';
 import {io} from "socket.io-client";
 
 //backend url
-const BASE_URL= "http://localhost:5001"
-// const BASE_URL= "http://192.170.11.50:5001"
+// const BASE_URL= "http://localhost:5001"
+
+//for production, deployed on Render
+const BASE_URL= import.meta.env.VITE_BASE_URL;
 
 
 //we will have bunch of different loading states
